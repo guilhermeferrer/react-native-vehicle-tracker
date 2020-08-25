@@ -4,9 +4,30 @@ import { store, persistor } from '../store';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { PersistGate } from 'redux-persist/integration/react';
+import { TransitionPresets } from '@react-navigation/stack';
 
 import Home from '../pages/Home';
 import Map from '../pages/Map';
+import Report from '../pages/Report';
+
+function cardStyleInterpolatorprops(props) {
+
+    const { current: { progress } } = props;
+
+    const { cardStyle } = TransitionPresets.ModalSlideFromBottomIOS.cardStyleInterpolator(props);
+
+    return {
+        cardStyle,
+        overlayStyle: {
+            opacity: progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 0.7],
+                extrapolate: 'clamp',
+            }),
+        },
+    };
+}
+
 
 export default function Routes() {
 
@@ -24,6 +45,15 @@ export default function Routes() {
                     >
                         <Screen name='Home' component={Home} />
                         <Screen name='Map' component={Map} />
+                        <Screen name='Report' component={Report}
+                            options={{
+                                ...TransitionPresets.ModalSlideFromBottomIOS,
+                                cardStyleInterpolator: cardStyleInterpolatorprops,
+                                cardStyle: {
+                                    backgroundColor: 'transparent'
+                                }
+                            }}
+                        />
                     </Navigator>
                 </PersistGate>
             </Provider>

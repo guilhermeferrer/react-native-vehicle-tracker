@@ -3,9 +3,12 @@ import { StatusBar } from 'react-native';
 
 import { Container } from './styles';
 
-export default function StatusBarComponent({ backgroundColor = 'black', barStyle = 'light-content' }) {
+export default function StatusBarComponent({ backgroundColor = 'transparent', barStyle = 'light-content', position = 'relative' }) {
     return (
-        <Container backgroundColor={backgroundColor}>
+        <Container
+            backgroundColor={backgroundColor}
+            position={position}
+        >
             <StatusBar
                 translucent
                 backgroundColor='transparent'

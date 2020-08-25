@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { useBackHandler } from '@react-native-community/hooks';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
@@ -30,11 +31,12 @@ import CardInfo from '../../components/CardInfo';
 
 import { useSharedValue, useAnimatedStyle, withTiming, useDerivedValue, useAnimatedRef, runOnUI, measure, scrollTo } from 'react-native-reanimated';
 
-export default function Home() {
+export default function Home({ navigation }) {
 
     const opened = useSharedValue(false);
     const translation = useSharedValue(0);
     const aRef = useAnimatedRef();
+    const isFocused = useIsFocused();
 
     const config = {
         duration: 200
@@ -74,7 +76,7 @@ export default function Home() {
     });
 
     useBackHandler(() => {
-        if (opened.value) {
+        if (opened.value && isFocused) {
             runOnUI(() => {
                 'worklet';
                 translation.value = measure(aRef).y;
@@ -135,8 +137,8 @@ export default function Home() {
                             <RectButton>
                                 <OptionRow>
                                     <IconRow>
-                                        <Ionicons name='location-outline' color='white' size={20} />
-                                        <OptionLabel>Relatório de posições</OptionLabel>
+                                        <Ionicons name='power-outline' color='white' size={20} />
+                                        <OptionLabel>Bloquear Veículo</OptionLabel>
                                     </IconRow>
                                     <Icon name='right' color='white' size={14} />
                                 </OptionRow>
@@ -144,8 +146,8 @@ export default function Home() {
                             <RectButton>
                                 <OptionRow>
                                     <IconRow>
-                                        <Ionicons name='trail-sign-outline' color='white' size={20} />
-                                        <OptionLabel>Relatório de trajetos</OptionLabel>
+                                        <Ionicons name='lock-closed-outline' color='white' size={20} />
+                                        <OptionLabel>Ativar Ancoragem</OptionLabel>
                                     </IconRow>
                                     <Icon name='right' color='white' size={14} />
                                 </OptionRow>
@@ -159,20 +161,20 @@ export default function Home() {
                                     <Icon name='right' color='white' size={14} />
                                 </OptionRow>
                             </RectButton>
-                            <RectButton>
+                            <RectButton onPress={() => navigation.navigate('Report', { name: 'posições' })}>
                                 <OptionRow>
                                     <IconRow>
-                                        <Ionicons name='power-outline' color='white' size={20} />
-                                        <OptionLabel>Bloquear Veículo</OptionLabel>
+                                        <Ionicons name='location-outline' color='white' size={20} />
+                                        <OptionLabel>Relatório de posições</OptionLabel>
                                     </IconRow>
                                     <Icon name='right' color='white' size={14} />
                                 </OptionRow>
                             </RectButton>
-                            <RectButton>
+                            <RectButton onPress={() => navigation.navigate('Report', { name: 'trajetos' })}>
                                 <OptionRow>
                                     <IconRow>
-                                        <Ionicons name='lock-closed-outline' color='white' size={20} />
-                                        <OptionLabel>Ativar Ancoragem</OptionLabel>
+                                        <Ionicons name='trail-sign-outline' color='white' size={20} />
+                                        <OptionLabel>Relatório de trajetos</OptionLabel>
                                     </IconRow>
                                     <Icon name='right' color='white' size={14} />
                                 </OptionRow>
