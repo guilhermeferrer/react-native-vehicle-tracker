@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Mapbox, { MapView, Camera } from '@react-native-mapbox-gl/maps';
+import Mapbox, { MapView, Camera, BackgroundLayerProps } from '@react-native-mapbox-gl/maps';
 import StatusBar from '../../components/StatusBar';
 import { point } from '@turf/turf';
 import { useDimensions } from '@react-native-community/hooks';
@@ -7,7 +7,7 @@ import { useDimensions } from '@react-native-community/hooks';
 import { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, withSpring, repeat, delay, withTiming } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 
-import { Container, Backdrop, CardContainer, Info, Icon, Card, GoUpLabel } from './styles';
+import { Container, CardContainer, Info, Icon, Card, GoUpLabel } from './styles';
 
 import CardInfo from '../../components/CardInfo';
 
@@ -38,7 +38,6 @@ const Map = () => {
             ctx.startY = translation.value;
         },
         onActive: (event, ctx) => {
-            console.log(event.translationY);
             translation.value = ctx.startY + event.translationY;
         },
         onEnd: event => {
@@ -91,8 +90,16 @@ const Map = () => {
                         zoomLevel={15}
                     />
                     <Mapbox.Images images={{ carIcon: require('../../assets/images/car.png') }} />
+                    <Mapbox.VectorSource>
+                        <Mapbox.BackgroundLayer
+                            id="background"
+                            style={{ backgroundColor: '#0A8CB9', backgroundOpacity: .3 }}
+                        />
+                        <Mapbox.FillLayer id="water" style={{ fillColor: '#0A8CB9' }} />
+                    </Mapbox.VectorSource>
                     <Mapbox.ShapeSource
                         id="shapeSource"
+                        aboveaboveLayerID='background'
                         shape={point(coordinate)}>
                         <Mapbox.SymbolLayer
                             id="shapePoint"
@@ -105,7 +112,6 @@ const Map = () => {
                         />
                     </Mapbox.ShapeSource>
                 </MapView>
-                <Backdrop pointerEvents='none' />
                 <PanGestureHandler onGestureEvent={gestureHandler}>
                     <CardContainer style={style}>
                         <Info style={iconStyle}>
