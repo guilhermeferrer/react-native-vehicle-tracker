@@ -38,7 +38,6 @@ export const Content = styled.View`
 export const Row = styled.View`
     flex-direction: row;
     align-items: center;
-    margin-top: 10px;
 `;
 
 export const Hidden = styled(Animated.ScrollView).attrs(props => ({

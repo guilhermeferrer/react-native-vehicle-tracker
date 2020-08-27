@@ -114,7 +114,7 @@ export default function Home({ navigation }) {
                     </Header>
                 </TouchableWithoutFeedback>
                 <Content>
-                    <Card style={buttonStyle}>
+                    <Card style={buttonStyle} onPress={() => navigation.navigate('Map')}>
                         <Column>
                             <LastPosition>ULTIMA POSIÇÃO</LastPosition>
                             <SmallText>Atualizado em 07/02/2020 as 03:58</SmallText>

@@ -30,9 +30,44 @@ export const GoUpLabel = styled(Animated.Text)`
 export const Card = styled.View`
     width: 100%;
     padding: 15px;
-    height: 550px;
     background-color: white;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-radius: 4px;
     margin-top: 15px;
+`;
+
+export const Plate = styled.Text`
+    font-size: 18px;
+    font-weight: bold;
+`;
+
+export const Row = styled.View`
+    flex-direction: row;
+    align-items: center;
+`;
+
+export const CardHeader = styled(Row)`
+    border-bottom-width: 1px;
+    padding-bottom: 10px;
+    border-color: rgba(0, 0, 0, .2);
+`;
+
+export const AddressRow = styled(Row)`
+    padding: 10px 0;
+    max-width: 90%;
+`;
+
+export const Model = styled.Text`
+    font-size: 12px;
+    margin-right: 15px;
+    opacity: .6;
+`;
+
+export const LastUpdate = styled.Text`
+    font-size: 12px;
+    margin-left: 5px;
+    opacity: .6;
+`;
+
+export const Address = styled.Text`
+    font-size: 14px;
 `;

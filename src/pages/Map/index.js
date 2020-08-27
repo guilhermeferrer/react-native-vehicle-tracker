@@ -1,13 +1,28 @@
 import React, { useEffect } from 'react';
-import Mapbox, { MapView, Camera, BackgroundLayerProps } from '@react-native-mapbox-gl/maps';
+import Mapbox, { MapView, Camera } from '@react-native-mapbox-gl/maps';
 import StatusBar from '../../components/StatusBar';
 import { point } from '@turf/turf';
 import { useDimensions } from '@react-native-community/hooks';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, withSpring, repeat, delay, withTiming } from 'react-native-reanimated';
+import { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, withSpring, repeat, withTiming, useAnimatedRef, runOnUI, measure } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 
-import { Container, CardContainer, Info, Icon, Card, GoUpLabel } from './styles';
+import {
+    Container,
+    CardContainer,
+    Info,
+    Icon,
+    Card,
+    GoUpLabel,
+    Plate,
+    Row,
+    Model,
+    LastUpdate,
+    CardHeader,
+    Address,
+    AddressRow
+} from './styles';
 
 import CardInfo from '../../components/CardInfo';
 
@@ -16,11 +31,11 @@ Mapbox.setAccessToken('pk.eyJ1IjoiZ3VpbGhlcm1lZm0iLCJhIjoiY2sxeTNnYjFmMGczMDNjbz
 const Map = () => {
 
     const { window: { height } } = useDimensions();
+    const aRef = useAnimatedRef();
 
     const CLOSED = height - 50;
-    const OPENED = height - 550;
+    const OPENED = height - 155;
     const translation = useSharedValue(CLOSED);
-    const iconTranslation = useSharedValue(0);
     const coordinate = [-46.8778221, -17.2262663];
     const loopAnimation = useSharedValue(0);
 
@@ -41,13 +56,11 @@ const Map = () => {
             translation.value = ctx.startY + event.translationY;
         },
         onEnd: event => {
-            if (translation.value >= CLOSED / 2) {
-                translation.value = withSpring(OPENED, options);
-            }
-            else {
+            const shouldClose = height - measure(aRef).height / 2 - 75;
+            if (translation.value >= shouldClose)
                 translation.value = withSpring(CLOSED, options);
-            }
-
+            else
+                translation.value = withSpring(height - measure(aRef).height - 75, options);
         }
     });
 
@@ -118,7 +131,18 @@ const Map = () => {
                             <Icon name='up' color='white' size={22} />
                             <GoUpLabel>Ver detalhes</GoUpLabel>
                         </Info>
-                        <Card>
+                        <Card ref={aRef}>
+                            <Plate>URH-1293</Plate>
+                            <CardHeader>
+                                <Model>Chevrolet - Onix 2019</Model>
+                                <Row>
+                                    <Ionicons name='calendar-outline' size={16} color='rgba(0, 0, 0, .6)' />
+                                    <LastUpdate>25 dez 2019 as 15:02</LastUpdate>
+                                </Row>
+                            </CardHeader>
+                            <AddressRow>
+                                <Address>Rua das mansões 240, Esplanada, Paracatu/MG</Address>
+                            </AddressRow>
                         </Card>
                     </CardContainer>
                 </PanGestureHandler>
