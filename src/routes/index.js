@@ -9,6 +9,7 @@ import { TransitionPresets } from '@react-navigation/stack';
 import Home from '../pages/Home';
 import Map from '../pages/Map';
 import Report from '../pages/Report';
+import Login from '../pages/Login';
 
 function cardStyleInterpolatorprops(props) {
 
@@ -41,10 +42,11 @@ export default function Routes() {
                         screenOptions={{
                             headerShown: false
                         }}
-                        initialRouteName="Home"
+                        initialRouteName="Login"
                     >
                         <Screen name='Home' component={Home} />
                         <Screen name='Map' component={Map} />
+                        <Screen name='Login' component={Login} />
                         <Screen name='Report' component={Report}
                             options={{
                                 ...TransitionPresets.ModalSlideFromBottomIOS,
