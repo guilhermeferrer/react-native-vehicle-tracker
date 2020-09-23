@@ -2,12 +2,22 @@ import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { RectButton } from 'react-native-gesture-handler';
 
-export const Container = styled(LinearGradient).attrs({
-    colors: ['rgba(0, 0, 0, .6)', 'rgba(0, 0, 0, .8)']
+export const Container = styled.View`
+    flex: 1;
+    justify-content: flex-end;
+    background: #0A85ED;
+`;
+
+export const Header = styled.View`
+    flex: 1;
+    background: white;
+`;
+
+export const HeaderContent = styled(LinearGradient).attrs({
+    colors: ['#07C8F9', '#09A6F3', '#0A85ED']
 })`
     flex: 1;
-    justify-content: center;
-    padding: 7%;
+    border-bottom-left-radius: 90px;
 `;
 
 export const Image = styled.Image`
@@ -18,8 +28,9 @@ export const Image = styled.Image`
 `;
 
 export const Content = styled.View`
-    padding: 15px;
+    padding: 25px;
     background-color: white;
+    border-top-right-radius: 90px;
 `;
 
 export const Title = styled.Text`
@@ -41,7 +52,7 @@ export const Line = styled.Text`
     margin-top: 5px;
     margin-bottom: 10px;
     border-left-width: 140px;
-    border-color: #011536;
+    border-color: #0A85ED;
 `;
 
 export const Input = styled.TextInput`
@@ -49,17 +60,18 @@ export const Input = styled.TextInput`
     padding: 0 10px;
     border-radius: 4px;
     height: 50px;
-    margin-top: 5px;
+    margin-bottom: 10px;
 `;
 
 export const Button = styled(RectButton)`
     height: 50px;
-    background-color: #011536;
+    background-color: #0A85ED;
     border-radius: 2px;
-    margin-top: 15px;
+    margin-top: 10px;
 
     justify-content: center;
     align-items: center;
+    border-radius: 3px;
 `;
 
 export const ButtonText = styled.Text`

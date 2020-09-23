@@ -10,7 +10,7 @@ const Button = Animated.createAnimatedComponent(RectButton);
 const { height } = Dimensions.get('window');
 
 export const Container = styled(LinearGradient).attrs({
-    colors: ['#0A8CB9', '#058086', '#02796A']
+    colors: ['#07C8F9', '#09A6F3', '#0A85ED']
 })`
     flex: 1;
 `;

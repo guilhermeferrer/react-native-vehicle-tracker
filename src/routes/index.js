@@ -1,4 +1,7 @@
 import React from 'react';
+import Alert from 'react-native-dropdownalert';
+import { setDropDownAlert } from '../services/alert';
+
 import { Provider } from 'react-redux';
 import { store, persistor } from '../store';
 import { NavigationContainer } from '@react-navigation/native';
@@ -44,8 +47,14 @@ export default function Routes() {
                         }}
                         initialRouteName="Login"
                     >
-                        <Screen name='Home' component={Home} />
-                        <Screen name='Map' component={Map} />
+                        <Screen name='Home'
+                            component={Home}
+                            options={TransitionPresets.FadeFromBottomAndroid}
+                        />
+                        <Screen name='Map'
+                            component={Map}
+                            options={TransitionPresets.FadeFromBottomAndroid}
+                        />
                         <Screen name='Login' component={Login} />
                         <Screen name='Report' component={Report}
                             options={{
@@ -59,6 +68,7 @@ export default function Routes() {
                     </Navigator>
                 </PersistGate>
             </Provider>
+            <Alert ref={setDropDownAlert} updateStatusBar={false} translucent />
         </NavigationContainer>
     );
 }

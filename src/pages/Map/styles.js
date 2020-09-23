@@ -24,7 +24,7 @@ export const Info = styled(Animated.View)`
 export const Icon = styled(Animated.createAnimatedComponent(AntDesign))``;
 
 export const GoUpLabel = styled(Animated.Text)`
-    color: white;
+    color: black;
 `;
 
 export const Card = styled.View`

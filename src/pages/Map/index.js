@@ -5,7 +5,7 @@ import { point } from '@turf/turf';
 import { useDimensions } from '@react-native-community/hooks';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, withSpring, repeat, withTiming, useAnimatedRef, runOnUI, measure } from 'react-native-reanimated';
+import { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, withSpring, repeat, withTiming, useAnimatedRef, withDecay, measure } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 
 import {
@@ -56,11 +56,20 @@ const Map = () => {
             translation.value = ctx.startY + event.translationY;
         },
         onEnd: event => {
-            const shouldClose = height - measure(aRef).height / 2 - 75;
-            if (translation.value >= shouldClose)
-                translation.value = withSpring(CLOSED, options);
-            else
-                translation.value = withSpring(height - measure(aRef).height - 75, options);
+            if (event.translationY > 0) {
+                translation.value = withDecay({
+                    velocity: event.velocityY,
+                    clamp: [0, CLOSED]
+                });
+            } else {
+                if (translation.value < height - measure(aRef).height - 75)
+                    translation.value = withSpring(height - measure(aRef).height - 75);
+                else
+                    translation.value = withDecay({
+                        velocity: event.velocityY,
+                        clamp: [height - measure(aRef).height - 75, 0]
+                    });
+            }
         }
     });
 
@@ -94,19 +103,20 @@ const Map = () => {
             <Container>
                 <MapView
                     style={{ flex: 1 }}
-                    styleURL={Mapbox.StyleURL.Dark}
+                    /* styleURL={Mapbox.StyleURL.Dark} */
                     logoEnabled={false}
                     attributionEnabled={false}
                 >
                     <Camera
                         centerCoordinate={coordinate}
                         zoomLevel={15}
+                        animationDuration={0}
                     />
                     <Mapbox.Images images={{ carIcon: require('../../assets/images/car.png') }} />
                     <Mapbox.VectorSource>
                         <Mapbox.BackgroundLayer
                             id="background"
-                            style={{ backgroundColor: '#0A8CB9', backgroundOpacity: .3 }}
+                            style={{ backgroundColor: '#0A85ED', backgroundOpacity: .1 }}
                         />
                         <Mapbox.FillLayer id="water" style={{ fillColor: '#0A8CB9' }} />
                     </Mapbox.VectorSource>
@@ -128,7 +138,7 @@ const Map = () => {
                 <PanGestureHandler onGestureEvent={gestureHandler}>
                     <CardContainer style={style}>
                         <Info style={iconStyle}>
-                            <Icon name='up' color='white' size={22} />
+                            <Icon name='up' color='black' size={22} />
                             <GoUpLabel>Ver detalhes</GoUpLabel>
                         </Info>
                         <Card ref={aRef}>

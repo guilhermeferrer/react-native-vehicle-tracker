@@ -89,7 +89,7 @@ export default function Home({ navigation }) {
 
     return (
         <>
-            <StatusBar backgroundColor={'#0A8CB9'} />
+            <StatusBar backgroundColor={'#07C8F9'} />
             <Container>
                 <TouchableWithoutFeedback
                     onPress={() => {
