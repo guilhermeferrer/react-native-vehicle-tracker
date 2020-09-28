@@ -1,13 +1,19 @@
-export function getUser(name) {
+export function login(email, password) {
     return {
-        type: 'GET_USER',
-        request: [{ url: `/users/${name}` }]
+        type: 'LOGIN',
+        request: [{ url: `/login`, method: 'post', data: { email, password } }]
     }
 }
 
-export function saveUsers(users) {
+export function saveUser(data) {
     return {
-        type: 'SAVE_USERS',
-        users
+        type: 'SAVE_USER',
+        ...data
+    }
+}
+
+export function logout() {
+    return {
+        type: 'LOGOUT'
     }
 }

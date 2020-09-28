@@ -1,14 +1,21 @@
-import React from 'react';
-import { alert } from '../../services/alert';
+import React, { useState } from 'react';
 
-import { Container, Image, Content, Line, Title, SubTitle, Input, Button, ButtonText, Header, HeaderContent } from './styles';
+import { Container, Content, Title, Input, Button, ButtonText, Header, HeaderContent } from './styles';
 import StatusBar from '../../components/StatusBar';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../store/modules/user/action';
+import Spinkit from 'react-native-spinkit';
 
 const Login = ({ navigation }) => {
 
-    function handleErrors() {
-        //alert('error', 'Error', 'Errors');
-        navigation.navigate('Home');
+    const [user, setUser] = useState();
+    const [password, setPassword] = useState();
+    const loading = useSelector(state => state.user.loading);
+    const dispatch = useDispatch();
+
+    function handleLogin() {
+        dispatch(login(user, password));
     }
 
     return (
@@ -21,11 +28,26 @@ const Login = ({ navigation }) => {
                     </HeaderContent>
                 </Header>
                 <Content>
-                    <Title>Entrar</Title>
-                    <Input placeholder='Usuário' />
-                    <Input placeholder='Senha' />
-                    <Button onPress={handleErrors}>
-                        <ButtonText>ENTRAR</ButtonText>
+                    <Title>LOGIN</Title>
+                    <Input
+                        placeholder='Usuário'
+                        onChangeText={setUser}
+                        autoCapitalize='none'
+                    />
+                    <Input
+                        placeholder='Senha'
+                        onChangeText={setPassword}
+                        secureTextEntry={true}
+                    />
+                    <Button onPress={handleLogin}>
+                        {
+                            loading
+                                ?
+                                <Spinkit color='white' size={22} type='ThreeBounce' />
+                                :
+                                <ButtonText>ENTRAR</ButtonText>
+
+                        }
                     </Button>
                 </Content>
             </Container>

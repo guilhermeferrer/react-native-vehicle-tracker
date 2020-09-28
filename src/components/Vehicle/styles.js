@@ -3,57 +3,39 @@ import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled(RectButton)`
     flex-direction: row;
+    background: rgba(0, 0, 0, .15);
+    margin-bottom: 10px;
+    border-radius: 4px;
+    padding: 15px;
 `;
 
-export const LastUpdate = styled.View`
-    width: 30%;
-    padding-top: ${props => props.offset}px;
-    align-items: center;
+export const Row = styled.View`
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
 `;
 
 export const Column = styled.View`
-    justify-content: center;
-    align-items: center;
+    
 `;
 
-export const SmallLine = styled.View`
-    width: 1px;
-    background: rgba(255, 255, 255, .3);
-    height: ${props => props.offset}px;
-`;
-
-export const Line = styled.View`
-    width: 1px;
-    background: rgba(255, 255, 255, .3);
-    flex: 1;
-`;
-
-export const Circle = styled.View`
-    height: 20px;
-    width: 20px;
-    border-radius: 10px;
-    background: white;
-`;
-
-export const Date = styled.Text`
+export const Model = styled.Text`
+    font-size: 22px;
     color: white;
-`;
-
-export const Info = styled.View`
-    flex: 1;
-    padding: ${props => props.offset}px 10px;
+    font-family: 'Montserrat-SemiBold';
 `;
 
 export const Plate = styled.Text`
-    color: white;
+    color: white;   
+    font-family: 'Montserrat-Regular';
 `;
 
-export const Text = styled.Text`
+export const Brand = styled.Text`
     color: white;
-    font-family: 'RussoOne-Regular';
+    font-family: 'Montserrat-Light';
 `;
 
-export const Name = styled.Text`
-    color: rgba(255, 255, 255, .6);
-    font-size: 12px;
+export const Image = styled.Image`
+    width: 100px;
+    resize-mode: contain;
 `;

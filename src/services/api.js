@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export default axios.create({
-    baseURL: 'https://api.github.com'
+    baseURL: 'http://nextfood.kinghost.net:21638'
 });

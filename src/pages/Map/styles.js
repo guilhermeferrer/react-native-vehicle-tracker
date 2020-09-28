@@ -25,6 +25,7 @@ export const Icon = styled(Animated.createAnimatedComponent(AntDesign))``;
 
 export const GoUpLabel = styled(Animated.Text)`
     color: black;
+    font-family: 'Montserrat-Medium';
 `;
 
 export const Card = styled.View`
@@ -37,7 +38,7 @@ export const Card = styled.View`
 
 export const Plate = styled.Text`
     font-size: 18px;
-    font-weight: bold;
+    font-family: 'Montserrat-Medium';
 `;
 
 export const Row = styled.View`
@@ -59,15 +60,16 @@ export const AddressRow = styled(Row)`
 export const Model = styled.Text`
     font-size: 12px;
     margin-right: 15px;
-    opacity: .6;
+    font-family: 'Montserrat-Light';
 `;
 
 export const LastUpdate = styled.Text`
     font-size: 12px;
     margin-left: 5px;
-    opacity: .6;
+    font-family: 'Montserrat-Light';
 `;
 
 export const Address = styled.Text`
     font-size: 14px;
+    font-family: 'Montserrat-Regular';
 `;

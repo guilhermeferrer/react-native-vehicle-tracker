@@ -1,76 +1,13 @@
 import React from 'react';
-import Alert from 'react-native-dropdownalert';
-import { setDropDownAlert } from '../services/alert';
 
-import { Provider } from 'react-redux';
-import { store, persistor } from '../store';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { PersistGate } from 'redux-persist/integration/react';
-import { TransitionPresets } from '@react-navigation/stack';
+import { useSelector } from 'react-redux';
 
-import Home from '../pages/Home';
-import Map from '../pages/Map';
-import Report from '../pages/Report';
-import Login from '../pages/Login';
-
-function cardStyleInterpolatorprops(props) {
-
-    const { current: { progress } } = props;
-
-    const { cardStyle } = TransitionPresets.ModalSlideFromBottomIOS.cardStyleInterpolator(props);
-
-    return {
-        cardStyle,
-        overlayStyle: {
-            opacity: progress.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 0.7],
-                extrapolate: 'clamp',
-            }),
-        },
-    };
-}
+import Unlogged from './unlogged';
+import Logged from './logged';
 
 
 export default function Routes() {
-
-    const { Screen, Navigator } = createStackNavigator();
-
-    return (
-        <NavigationContainer>
-            <Provider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
-                    <Navigator
-                        screenOptions={{
-                            headerShown: false
-                        }}
-                        initialRouteName="Login"
-                    >
-                        <Screen name='Home'
-                            component={Home}
-                            options={TransitionPresets.FadeFromBottomAndroid}
-                        />
-                        <Screen name='Map'
-                            component={Map}
-                            options={TransitionPresets.FadeFromBottomAndroid}
-                        />
-                        <Screen name='Login' component={Login} />
-                        <Screen name='Report' component={Report}
-                            options={{
-                                ...TransitionPresets.ModalSlideFromBottomIOS,
-                                cardStyleInterpolator: cardStyleInterpolatorprops,
-                                cardStyle: {
-                                    backgroundColor: 'transparent'
-                                }
-                            }}
-                        />
-                    </Navigator>
-                </PersistGate>
-            </Provider>
-            <Alert ref={setDropDownAlert} updateStatusBar={false} translucent />
-        </NavigationContainer>
-    );
+    const token = useSelector(state => state.user.token);
+    
+    return token ? <Logged /> : <Unlogged />;
 }
-
-//<Screen name='Home' component={Home} />

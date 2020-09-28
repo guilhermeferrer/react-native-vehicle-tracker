@@ -1,13 +1,33 @@
 const initialState = {
-    users: []
+    users: [],
+    loading: false,
+    token: null
 }
 
-export default function todo(state = initialState, action) {
+export default function vehicle(state = initialState, action) {
     switch (action.type) {
-        case 'SAVE_USERS':
+        case 'LOGIN':
             return {
                 ...state,
-                users: [...state.users, ...action.users]
+                loading: true
+            }
+        case 'LOGIN_ERROR':
+        case 'LOGIN_SUCCESS':
+            return {
+                ...state,
+                loading: false
+            }
+        case 'SAVE_USER':
+            return {
+                ...state,
+                token: action.token,
+                user: action.user
+            }
+        case 'LOGOUT':
+            return {
+                ...state,
+                token: null,
+                user: null
             }
         default:
             return state;

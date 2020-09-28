@@ -22,21 +22,8 @@ export const Title = styled.Text`
     font-family: 'RussoOne-Regular';
 `;
 
-export const Card = styled(Button)`
-    border-radius: 6px;
-    padding: 15px;
-    background: rgba(0, 0, 0, .15);
-    width: 100%;
-`;
-
 export const Content = styled.View`
     flex: 1;
-    padding: 0 15px;
-    align-items: center;
-`;
-
-export const Row = styled.View`
-    flex-direction: row;
     align-items: center;
 `;
 
@@ -47,39 +34,19 @@ export const Hidden = styled(Animated.ScrollView).attrs(props => ({
     position: absolute;
     width: 100%;
     height: ${height - 170}px;
+    padding: 0 15px;
 `;
 
 export const Scroll = styled(Animated.ScrollView)`
-    margin-top: 10px;
-    background: rgba(0, 0, 0, .15);
     width: 100%;
     border-radius: 6px;
-    margin-bottom: 15px;
+    padding: 0 15px;
 `;
 
 export const Header = styled.View`
     align-items: center;
     justify-content: center;
     margin: 10px 0;
-`;
-
-export const Column = styled.View`
-`;
-
-export const LastPosition = styled.Text`
-    color: white;
-    font-size: 18px;
-`;
-
-export const Address = styled.Text`
-    color: white;
-    font-size: 12px;
-    flex: 1;
-`;
-
-export const SmallText = styled.Text`
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 12px;
 `;
 
 export const Icon = styled(Animated.createAnimatedComponent(AntDesign))``;

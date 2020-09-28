@@ -26,12 +26,12 @@ import {
 } from './styles';
 
 import StatusBar from '../../components/StatusBar';
-import Vehicle from '../../components/Vehicle';
+import Position from '../../components/Position';
 import CardInfo from '../../components/CardInfo';
 
 import { useSharedValue, useAnimatedStyle, withTiming, useDerivedValue, useAnimatedRef, runOnUI, measure, scrollTo } from 'react-native-reanimated';
 
-export default function Home({ navigation }) {
+export default function Positions({ navigation }) {
 
     const opened = useSharedValue(false);
     const translation = useSharedValue(0);
@@ -114,22 +114,22 @@ export default function Home({ navigation }) {
                     </Header>
                 </TouchableWithoutFeedback>
                 <Content>
-                    <Card style={buttonStyle} onPress={() => navigation.navigate('Map')}>
-                        <Column>
+                    <Column>
+                        <Card style={buttonStyle} onPress={() => navigation.navigate('Map')}>
                             <LastPosition>ULTIMA POSIÇÃO</LastPosition>
                             <SmallText>Atualizado em 07/02/2020 as 03:58</SmallText>
                             <Row>
                                 <Ionicons name='pin' color='white' size={16} />
                                 <Address>Rua das mansões, 240, Esplanada, Paracatu/MG Brasil</Address>
                             </Row>
-                        </Column>
-                    </Card>
+                        </Card>
+                    </Column>
                     <Scroll style={style} ref={aRef}>
-                        <Vehicle />
-                        <Vehicle />
-                        <Vehicle />
-                        <Vehicle />
-                        <Vehicle />
+                        <Position />
+                        <Position />
+                        <Position />
+                        <Position />
+                        <Position />
                     </Scroll>
                     <Hidden style={hiddenViewStyle}>
                         <CardInfo />
