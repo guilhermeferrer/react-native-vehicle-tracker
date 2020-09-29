@@ -36,7 +36,7 @@ export const Circle = styled.View`
     background: white;
 `;
 
-export const Date = styled.Text`
+export const Period = styled.Text`
     color: white;
     font-family: 'Montserrat-Regular';
 `;

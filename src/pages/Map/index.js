@@ -28,7 +28,8 @@ import CardInfo from '../../components/CardInfo';
 
 Mapbox.setAccessToken('pk.eyJ1IjoiZ3VpbGhlcm1lZm0iLCJhIjoiY2sxeTNnYjFmMGczMDNjbzNvYmdsdXVxcyJ9.HGlb6ErSRgQaGF8zAQZVew');
 
-const Map = () => {
+const Map = ({ route }) => {
+    const { latitude, longitude } = route.params; route
 
     const { window: { height } } = useDimensions();
     const aRef = useAnimatedRef();
@@ -36,7 +37,7 @@ const Map = () => {
     const CLOSED = height - 50;
     const OPENED = height - 155;
     const translation = useSharedValue(CLOSED);
-    const coordinate = [-46.8778221, -17.2262663];
+    const coordinate = [Number(longitude), Number(latitude)];
     const loopAnimation = useSharedValue(0);
 
     const options = {

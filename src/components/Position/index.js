@@ -1,17 +1,19 @@
 import React from 'react';
+import { format } from 'date-fns';
 
-import { Container, LastUpdate, Date, Info, Address, Line, SmallLine, Column, Circle, SmallText, Text } from './styles';
+import { Container, LastUpdate, Period, Info, Address, Line, SmallLine, Column, Circle, SmallText, Text } from './styles';
 
 import { useNavigation } from '@react-navigation/native';
 
-const Position = () => {
+const Position = ({ position }) => {
+    const { createdAt, ignition, latitude, longitude } = position;
     const { navigate } = useNavigation();
     const offset = 20;
 
     return (
-        <Container onPress={() => navigate('Map')}>
+        <Container onPress={() => navigate('Map', { latitude, longitude })}>
             <LastUpdate offset={offset}>
-                <Date>25/08 15:13</Date>
+                <Period>{format(new Date(createdAt), 'dd/MM HH:mm')}</Period>
             </LastUpdate>
             <Column>
                 <SmallLine offset={offset} />
@@ -19,9 +21,9 @@ const Position = () => {
                 <Line />
             </Column>
             <Info offset={offset}>
-                <Text>Ignição ligada</Text>
+                <Text>Ignição {ignition ? 'ligada' : 'desligada'}</Text>
                 <Address>Rua das mansões, 240, Esplanada, Paracatu/MG Brasil</Address>
-                <SmallText>-17.225995,-46.880330</SmallText>
+                <SmallText>{Number(latitude).toFixed(6)}, {Number(longitude).toFixed(6)}</SmallText>
             </Info>
         </Container>
     );
