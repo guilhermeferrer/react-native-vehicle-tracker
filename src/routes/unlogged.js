@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Login from '../pages/Login';
+import Register from '../pages/Register';
 
 export default function Unlogged() {
 
@@ -14,6 +15,7 @@ export default function Unlogged() {
             }}
         >
             <Screen name='Login' component={Login} />
+            <Screen name='Register' component={Register} />
         </Navigator>
     );
 }

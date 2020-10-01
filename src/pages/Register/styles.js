@@ -24,7 +24,6 @@ export const Content = styled.View`
     padding: 25px;
     background-color: white;
     border-top-right-radius: 90px;
-    padding-bottom: 0;
 `;
 
 export const Title = styled.Text`
@@ -59,45 +58,4 @@ export const ButtonText = styled.Text`
     color: white;
     letter-spacing: 1px;
     font-family: 'Montserrat-Bold';
-`;
-
-export const RememberMeButton = styled.View`
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 15px;
-`;
-
-export const RememberMeCheckBox = styled.View`
-    justify-content: center;
-    align-items: center;
-    width: 15px;
-    height: 15px;
-    border-radius: 3px;
-    background: ${props => props.rememberMe ? '#0A85ED' : '#f2f5f7'};
-    border-width: 1px;
-    border-color: ${props => props.rememberMe ? '#0A85ED' : 'rgba(0, 0, 0, .1)'};
-`;
-
-export const RememberMeLabel = styled.Text`
-    margin-left: 5px;
-    font-size: 12px;  
-    font-family: 'Montserrat-Regular';
-`;
-
-export const RegisterSection = styled.View`
-    justify-content: center;
-    align-items: center;
-    margin: 10px 0;
-`;
-
-export const RegisterButton = styled(RectButton)`
-    flex-direction: row;
-    align-items: center;
-    padding: 10px;
-`;
-
-export const RegisterLabel = styled.Text`
-    margin-left: 5px;
-    font-size: 12px;  
-    font-family: 'Montserrat-Medium';
 `;

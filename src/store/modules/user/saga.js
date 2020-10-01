@@ -12,5 +12,7 @@ function* handleErrors({ error }) {
 
 export default all([
     takeLatest('LOGIN_SUCCESS', loginSuccess),
-    takeLatest('LOGIN_ERROR', handleErrors)
+    takeLatest('LOGIN_ERROR', handleErrors),
+    takeLatest('REGISTER_ERROR', handleErrors),
+    takeLatest('REGISTER_SUCCESS', loginSuccess)
 ]);
