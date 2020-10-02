@@ -6,12 +6,12 @@ import { Container, LastUpdate, Period, Info, Address, Line, SmallLine, Column, 
 import { useNavigation } from '@react-navigation/native';
 
 const Position = ({ position }) => {
-    const { createdAt, ignition, latitude, longitude } = position;
+    const { createdAt, ignition, latitude, longitude, address } = position;
     const { navigate } = useNavigation();
     const offset = 20;
 
     return (
-        <Container onPress={() => navigate('Map', { latitude, longitude })}>
+        <Container onPress={() => navigate('Map', position)}>
             <LastUpdate offset={offset}>
                 <Period>{format(new Date(createdAt), 'dd/MM HH:mm')}</Period>
             </LastUpdate>
@@ -22,7 +22,7 @@ const Position = ({ position }) => {
             </Column>
             <Info offset={offset}>
                 <Text>Ignição {ignition ? 'ligada' : 'desligada'}</Text>
-                <Address>Rua das mansões, 240, Esplanada, Paracatu/MG Brasil</Address>
+                <Address>{address ?? 'Sem informação'}</Address>
                 <SmallText>{Number(latitude).toFixed(6)}, {Number(longitude).toFixed(6)}</SmallText>
             </Info>
         </Container>

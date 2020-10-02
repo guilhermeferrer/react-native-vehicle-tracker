@@ -4,14 +4,18 @@ import { Container, Row, Column, Model, Plate, Brand, Image } from './styles';
 import { alert } from '../../services/alert';
 
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setVehicle } from '../../store/modules/vehicle/action';
 
 const Vehicle = ({ equipment, plate, model, year, brand, icon }) => {
     const { navigate } = useNavigation();
     const offset = 20;
+    const dispatch = useDispatch();
 
     function handlePress() {
         if (!equipment)
             return alert('warn', 'Aviso', 'Nenhum rastreador vinculado no veículo!');
+        dispatch(setVehicle({ plate, model, year, brand, icon }));
         navigate('Positions', { imei: equipment.imei });
     }
 

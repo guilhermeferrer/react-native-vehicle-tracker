@@ -4,3 +4,10 @@ export function getVehicles() {
         request: [{ url: `/user/vehicles`, method: 'get' }]
     }
 }
+
+export function setVehicle(vehicle) {
+    return {
+        type: 'SET_VEHICLE',
+        vehicle
+    }
+}

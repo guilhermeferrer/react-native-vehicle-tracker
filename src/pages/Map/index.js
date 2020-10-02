@@ -1,12 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Mapbox, { MapView, Camera } from '@react-native-mapbox-gl/maps';
 import StatusBar from '../../components/StatusBar';
 import { point } from '@turf/turf';
 import { useDimensions } from '@react-native-community/hooks';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/esm/locale';
+import { useSelector } from 'react-redux';
 
 import { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, withSpring, repeat, withTiming, useAnimatedRef, withDecay, measure } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
+import io from 'socket.io-client';
 
 import {
     Container,
@@ -29,10 +33,19 @@ import CardInfo from '../../components/CardInfo';
 Mapbox.setAccessToken('pk.eyJ1IjoiZ3VpbGhlcm1lZm0iLCJhIjoiY2sxeTNnYjFmMGczMDNjbzNvYmdsdXVxcyJ9.HGlb6ErSRgQaGF8zAQZVew');
 
 const Map = ({ route }) => {
-    const { latitude, longitude } = route.params; route
+    const client = io('http://nextfood.kinghost.net:21621');
+    const { params } = route;
+    const [position, setPosition] = useState(params);
+    const { plate, model, year, brand } = useSelector(state => state.vehicle.vehicle);
+
+    const { latitude, longitude, imei, address, gps_date } = position;
 
     const { window: { height } } = useDimensions();
     const aRef = useAnimatedRef();
+
+    const positionListener = () => client.on('position', position => {
+        setPosition(position);
+    });
 
     const CLOSED = height - 50;
     const OPENED = height - 155;
@@ -96,6 +109,8 @@ const Map = ({ route }) => {
     });
 
     useEffect(() => {
+        positionListener();
+        client.emit('join', imei);
         loopAnimation.value = repeat(withTiming(5, { duration: 1000 }), 15, true);
     }, []);
 
@@ -143,16 +158,16 @@ const Map = ({ route }) => {
                             <GoUpLabel>Ver detalhes</GoUpLabel>
                         </Info>
                         <Card ref={aRef}>
-                            <Plate>URH-1293</Plate>
+                            <Plate>{plate}</Plate>
                             <CardHeader>
-                                <Model>Chevrolet - Onix 2019</Model>
+                                <Model>{model} - {brand} {year}</Model>
                                 <Row>
                                     <Ionicons name='calendar-outline' size={16} color='rgba(0, 0, 0, .6)' />
-                                    <LastUpdate>25 dez 2019 as 15:02</LastUpdate>
+                                    <LastUpdate>{format(new Date(gps_date), "dd MMM yyyy 'as' HH:mm", { locale: ptBR })}</LastUpdate>
                                 </Row>
                             </CardHeader>
                             <AddressRow>
-                                <Address>Rua das mansões 240, Esplanada, Paracatu/MG</Address>
+                                <Address>{address ?? 'Sem informação'}</Address>
                             </AddressRow>
                         </Card>
                     </CardContainer>

@@ -16,6 +16,11 @@ export default function vehicle(state = initialState, action) {
                 loading: false,
                 vehicles: action.response.data
             }
+        case 'SET_VEHICLE':
+            return {
+                ...state,
+                vehicle: action.vehicle
+            }
         default:
             return state;
     }

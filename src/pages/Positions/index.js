@@ -49,7 +49,6 @@ export default function Positions({ navigation, route }) {
     const lastPosition = useSelector(state => state.position.lastPosition);
     const positions = useSelector(state => state.position.positions);
     const loading = useSelector(state => state.position.loading);
-    console.log(positions);
 
     const config = {
         duration: 200
@@ -137,12 +136,12 @@ export default function Positions({ navigation, route }) {
                         :
                         <Content>
                             <Column>
-                                <Card style={buttonStyle} onPress={() => navigation.navigate('Map', { latitude: lastPosition.latitude, longitude: lastPosition.longitude })}>
+                                <Card style={buttonStyle} onPress={() => navigation.navigate('Map', lastPosition)}>
                                     <LastPosition>ULTIMA POSIÇÃO</LastPosition>
                                     <SmallText>Atualizado em {format(new Date(lastPosition.updatedAt), 'dd/MM/yyyy')} as {format(new Date(lastPosition.updatedAt), 'HH:mm')}</SmallText>
                                     <Row>
                                         <Ionicons name='pin' color='white' size={16} />
-                                        <Address>Rua das mansões, 240, Esplanada, Paracatu/MG Brasil</Address>
+                                        <Address>{lastPosition.address ?? 'Sem informação'}</Address>
                                     </Row>
                                 </Card>
                             </Column>
