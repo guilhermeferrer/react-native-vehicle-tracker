@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Container, Content, Title, Input, Button, ButtonText, Header, HeaderContent, RememberMeButton, RememberMeCheckBox, RememberMeLabel, RegisterSection, RegisterButton, RegisterLabel } from './styles';
+import { Container, Content, Title, Input, Button, ButtonText, Header, HeaderContent, Banner, RememberMeButton, RememberMeCheckBox, RememberMeLabel, RegisterSection, RegisterButton, RegisterLabel } from './styles';
 import StatusBar from '../../components/StatusBar';
 import { TouchableWithoutFeedback } from 'react-native';
 
@@ -30,7 +30,7 @@ const Login = ({ navigation }) => {
             <Container>
                 <Header>
                     <HeaderContent>
-
+                        <Banner source={require('../../assets/images/banner.png')} />
                     </HeaderContent>
                 </Header>
                 <Content>
