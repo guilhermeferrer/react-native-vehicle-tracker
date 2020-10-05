@@ -37,7 +37,9 @@ export default function vehicle(state = initialState, action) {
         case 'TOGGLE_REMEMBER_ME':
             return {
                 ...state,
-                rememberMe: !state.rememberMe
+                rememberMe: !state.rememberMe,
+                email: null,
+                password: null
             }
         case 'REGISTER':
             return {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Container, Content, Title, Input, Button, ButtonText, Header, HeaderContent } from './styles';
+import { Container, Content, Title, Input, Button, ButtonText, Header, HeaderContent, Banner } from './styles';
 import StatusBar from '../../components/StatusBar';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,7 +26,7 @@ const Register = () => {
             <Container>
                 <Header>
                     <HeaderContent>
-
+                        <Banner source={require('../../assets/images/banner.png')} />
                     </HeaderContent>
                 </Header>
                 <Content>

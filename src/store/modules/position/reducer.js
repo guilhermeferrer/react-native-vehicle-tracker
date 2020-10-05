@@ -1,7 +1,9 @@
 const initialState = {
     lastPosition: null,
     positions: [],
-    loading: false
+    loading: false,
+    reportData: null,
+    success: null
 }
 
 export default function position(state = initialState, action) {
@@ -21,6 +23,29 @@ export default function position(state = initialState, action) {
             return {
                 ...state,
                 positions: action.response.data
+            }
+        case 'ADD_POSITION':
+            return {
+                ...state,
+                lastPosition: action.position,
+                positions: [action.position, ...state.positions]
+            }
+        case 'GET_REPORT_POSITIONS':
+            return {
+                ...state,
+                reportData: null,
+                success: null
+            }
+        case 'GET_REPORT_POSITIONS_SUCCESS':
+            return {
+                ...state,
+                reportData: action.response.data,
+                success: true
+            }
+        case 'RESET_REPORT':
+            return {
+                ...state,
+                success: null
             }
         default:
             return state;

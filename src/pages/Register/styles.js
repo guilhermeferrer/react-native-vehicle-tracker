@@ -18,6 +18,14 @@ export const HeaderContent = styled(LinearGradient).attrs({
 })`
     flex: 1;
     border-bottom-left-radius: 90px;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const Banner = styled.Image`
+    height: 280px;
+    width: 280px;
+    resize-mode: contain;
 `;
 
 export const Content = styled.View`

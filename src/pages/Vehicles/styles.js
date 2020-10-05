@@ -52,7 +52,7 @@ export const Header = styled.View`
 export const Icon = styled(Animated.createAnimatedComponent(AntDesign))``;
 
 export const OptionsContainer = styled.View`
-    margin: 20px 10px 10px 10px;
+    margin: 0 10px 10px 10px;
     border-top-width: 1px;
     border-color: rgba(255, 255, 255, .4);
 `;

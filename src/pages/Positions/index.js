@@ -5,6 +5,7 @@ import { useBackHandler } from '@react-native-community/hooks';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RectButton } from 'react-native-gesture-handler';
 import { format } from 'date-fns';
+import { alert } from '../../services/alert';
 
 import {
     Container,
@@ -32,12 +33,18 @@ import CardInfo from '../../components/CardInfo';
 import Loading from '../../components/Loading';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getLastPosition, getPositions } from '../../store/modules/position/action';
+import { getLastPosition, getPositions, addPosition } from '../../store/modules/position/action';
 
 import { useSharedValue, useAnimatedStyle, withTiming, useDerivedValue, useAnimatedRef, runOnUI, measure, scrollTo } from 'react-native-reanimated';
-import { last } from 'rxjs/operators';
+import io from 'socket.io-client';
 
 export default function Positions({ navigation, route }) {
+
+    const client = io('http://nextfood.kinghost.net:21621');
+
+    const positionListener = () => client.on('position', position => {
+        dispatch(addPosition(position));
+    });
 
     const opened = useSharedValue(false);
     const translation = useSharedValue(0);
@@ -102,7 +109,14 @@ export default function Positions({ navigation, route }) {
     useEffect(() => {
         dispatch(getLastPosition(imei));
         dispatch(getPositions(imei));
+        positionListener();
+        client.emit('join', imei);
     }, []);
+
+    function handleChangeOilAndElectricityStatus() {
+        client.emit(lastPosition.electricity ? 'block' : 'restore', imei);
+        alert('warn', 'Comando enviado!', 'Você receberá uma notificação assim que o rastreador receber o comando');
+    }
 
     return (
         <>
@@ -138,7 +152,7 @@ export default function Positions({ navigation, route }) {
                             <Column>
                                 <Card style={buttonStyle} onPress={() => navigation.navigate('Map', lastPosition)}>
                                     <LastPosition>ULTIMA POSIÇÃO</LastPosition>
-                                    <SmallText>Atualizado em {format(new Date(lastPosition.updatedAt), 'dd/MM/yyyy')} as {format(new Date(lastPosition.updatedAt), 'HH:mm')}</SmallText>
+                                    <SmallText>Atualizado em {format(new Date(lastPosition.gps_date), 'dd/MM/yyyy')} as {format(new Date(lastPosition.gps_date), 'HH:mm')}</SmallText>
                                     <Row>
                                         <Ionicons name='pin' color='white' size={16} />
                                         <Address>{lastPosition.address ?? 'Sem informação'}</Address>
@@ -155,11 +169,11 @@ export default function Positions({ navigation, route }) {
                             <Hidden style={hiddenViewStyle}>
                                 <CardInfo />
                                 <OptionsContainer>
-                                    <RectButton>
+                                    <RectButton onPress={handleChangeOilAndElectricityStatus}>
                                         <OptionRow>
                                             <IconRow>
                                                 <Ionicons name='power-outline' color='white' size={20} />
-                                                <OptionLabel>Bloquear Veículo</OptionLabel>
+                                                <OptionLabel>{lastPosition.electricity ? 'Bloquear Veículo' : 'Desbloquear Veículo'}</OptionLabel>
                                             </IconRow>
                                             <Icon name='right' color='white' size={14} />
                                         </OptionRow>

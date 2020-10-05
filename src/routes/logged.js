@@ -22,7 +22,7 @@ export default function Unlogged() {
             overlayStyle: {
                 opacity: progress.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [0, 0.7],
+                    outputRange: [0, 1],
                     extrapolate: 'clamp',
                 }),
             },

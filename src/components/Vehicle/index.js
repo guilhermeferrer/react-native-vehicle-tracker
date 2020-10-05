@@ -15,7 +15,7 @@ const Vehicle = ({ equipment, plate, model, year, brand, icon }) => {
     function handlePress() {
         if (!equipment)
             return alert('warn', 'Aviso', 'Nenhum rastreador vinculado no veículo!');
-        dispatch(setVehicle({ plate, model, year, brand, icon }));
+        dispatch(setVehicle({ plate, model, year, brand, icon, imei: equipment.imei }));
         navigate('Positions', { imei: equipment.imei });
     }
 
