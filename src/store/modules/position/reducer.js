@@ -47,6 +47,20 @@ export default function position(state = initialState, action) {
                 ...state,
                 success: null
             }
+        case 'UPDATE_ANCHOR':
+            return {
+                ...state,
+                lastPosition: {
+                    ...state.lastPosition,
+                    events_config: {
+                        ...state.lastPosition.events_config,
+                        anchor: {
+                            ...state.lastPosition.events_config.anchor,
+                            active: action.active
+                        }
+                    }
+                }
+            }
         default:
             return state;
     }

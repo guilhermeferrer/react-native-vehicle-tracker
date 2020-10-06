@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Mapbox, { MapView, Camera } from '@react-native-mapbox-gl/maps';
 import StatusBar from '../../components/StatusBar';
-import { point } from '@turf/turf';
+import { point, circle } from '@turf/turf';
 import { useDimensions } from '@react-native-community/hooks';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { format } from 'date-fns';
@@ -36,9 +36,10 @@ const Map = ({ route }) => {
     const client = io('http://nextfood.kinghost.net:21621');
     const { params } = route;
     const [position, setPosition] = useState(params);
+    const [zoomLevel, setZoomLevel] = useState(0);
     const { plate, model, year, brand } = useSelector(state => state.vehicle.vehicle);
 
-    const { latitude, longitude, imei, address, gps_date } = position;
+    const { latitude, longitude, imei, address, gps_date, realTime } = position;
 
     const { window: { height } } = useDimensions();
     const aRef = useAnimatedRef();
@@ -109,10 +110,27 @@ const Map = ({ route }) => {
     });
 
     useEffect(() => {
-        positionListener();
-        client.emit('join', imei);
         loopAnimation.value = repeat(withTiming(5, { duration: 1000 }), 15, true);
+        if (realTime) {
+            positionListener();
+            client.emit('join', imei);
+        }
     }, []);
+
+    function getAnchorState() {
+        const { events_config } = position;
+
+        if (!events_config)
+            return false;
+        if (!events_config.anchor)
+            return false;
+        return events_config.anchor.active;
+    }
+
+    function getAnchor() {
+        const { events_config } = position;
+        return events_config.anchor.point;
+    }
 
     return (
         <>
@@ -122,6 +140,7 @@ const Map = ({ route }) => {
                     /* styleURL={Mapbox.StyleURL.Dark} */
                     logoEnabled={false}
                     attributionEnabled={false}
+                    onRegionDidChange={event => setZoomLevel(event.properties.zoomLevel)}
                 >
                     <Camera
                         centerCoordinate={coordinate}
@@ -136,12 +155,53 @@ const Map = ({ route }) => {
                         />
                         <Mapbox.FillLayer id="water" style={{ fillColor: '#0A8CB9' }} />
                     </Mapbox.VectorSource>
+                    {
+                        realTime && getAnchorState() && zoomLevel >= 15.6 &&
+                        <>
+                            <Mapbox.ShapeSource
+                                id="line"
+                                aboveLayerID='background'
+                                shape={circle(getAnchor(), 50, { units: 'meters' })}>
+                                <Mapbox.LineLayer
+                                    id="shapeLine"
+                                    style={{
+                                        lineColor: '#0A85ED',
+                                        lineWidth: 2.5,
+                                        lineDasharray: [0.00001, 0.00001],
+                                    }}
+                                />
+                            </Mapbox.ShapeSource>
+                            <Mapbox.ShapeSource
+                                id="circle"
+                                bellowLayerID='iconShape'
+                                shape={circle(getAnchor(), 50, { units: 'meters' })}>
+                                <Mapbox.FillLayer
+                                    id="shapeCircle"
+                                    style={{ fillColor: '#0A85ED', fillOpacity: .2 }}
+                                />
+                            </Mapbox.ShapeSource>
+                            <Mapbox.ShapeSource
+                                id="iconShape2"
+                                aboveLayerID='background'
+                                shape={point(coordinate)}>
+                                <Mapbox.SymbolLayer
+                                    id="icon2"
+                                    style={{
+                                        iconImage: 'carIcon',
+                                        iconAllowOverlap: true,
+                                        textAllowOverlap: true,
+                                        iconSize: .07
+                                    }}
+                                />
+                            </Mapbox.ShapeSource>
+                        </>
+                    }
                     <Mapbox.ShapeSource
-                        id="shapeSource"
-                        aboveaboveLayerID='background'
+                        id="iconShape"
+                        aboveLayerID='background'
                         shape={point(coordinate)}>
                         <Mapbox.SymbolLayer
-                            id="shapePoint"
+                            id="icon"
                             style={{
                                 iconImage: 'carIcon',
                                 iconAllowOverlap: true,

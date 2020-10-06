@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Container, Row, Column, Model, Plate, Brand, Image } from './styles';
 import { alert } from '../../services/alert';
@@ -6,6 +6,7 @@ import { alert } from '../../services/alert';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { setVehicle } from '../../store/modules/vehicle/action';
+import OneSignal from 'react-native-onesignal';
 
 const Vehicle = ({ equipment, plate, model, year, brand, icon }) => {
     const { navigate } = useNavigation();
@@ -18,6 +19,11 @@ const Vehicle = ({ equipment, plate, model, year, brand, icon }) => {
         dispatch(setVehicle({ plate, model, year, brand, icon, imei: equipment.imei }));
         navigate('Positions', { imei: equipment.imei });
     }
+
+    useEffect(() => {
+        if (equipment)
+            OneSignal.sendTag(equipment.imei, true);
+    }, []);
 
     return (
         <Container onPress={handlePress}>

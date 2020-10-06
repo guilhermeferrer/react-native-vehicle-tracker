@@ -34,6 +34,7 @@ import Loading from '../../components/Loading';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getLastPosition, getPositions, addPosition } from '../../store/modules/position/action';
+import { setAnchor } from '../../store/modules/anchor/action';
 
 import { useSharedValue, useAnimatedStyle, withTiming, useDerivedValue, useAnimatedRef, runOnUI, measure, scrollTo } from 'react-native-reanimated';
 import io from 'socket.io-client';
@@ -118,6 +119,23 @@ export default function Positions({ navigation, route }) {
         alert('warn', 'Comando enviado!', 'Você receberá uma notificação assim que o rastreador receber o comando');
     }
 
+    function getAnchorState() {
+        const { events_config } = lastPosition;
+
+        if (!events_config)
+            return false;
+        if (!events_config.anchor)
+            return false;
+        return events_config.anchor.active;
+    }
+
+    function handleChangeAnchorStatus() {
+
+        const active = !getAnchorState();
+
+        dispatch(setAnchor(active, imei));
+    }
+
     return (
         <>
             <StatusBar backgroundColor={'#07C8F9'} />
@@ -150,7 +168,7 @@ export default function Positions({ navigation, route }) {
                         :
                         <Content>
                             <Column>
-                                <Card style={buttonStyle} onPress={() => navigation.navigate('Map', lastPosition)}>
+                                <Card style={buttonStyle} onPress={() => navigation.navigate('Map', { ...lastPosition, realTime: true })}>
                                     <LastPosition>ULTIMA POSIÇÃO</LastPosition>
                                     <SmallText>Atualizado em {format(new Date(lastPosition.gps_date), 'dd/MM/yyyy')} as {format(new Date(lastPosition.gps_date), 'HH:mm')}</SmallText>
                                     <Row>
@@ -178,11 +196,11 @@ export default function Positions({ navigation, route }) {
                                             <Icon name='right' color='white' size={14} />
                                         </OptionRow>
                                     </RectButton>
-                                    <RectButton>
+                                    <RectButton onPress={handleChangeAnchorStatus}>
                                         <OptionRow>
                                             <IconRow>
                                                 <Ionicons name='lock-closed-outline' color='white' size={20} />
-                                                <OptionLabel>Ativar Ancoragem</OptionLabel>
+                                                <OptionLabel>{getAnchorState() ? 'Desativar' : 'Ativar'} ancoragem</OptionLabel>
                                             </IconRow>
                                             <Icon name='right' color='white' size={14} />
                                         </OptionRow>
