@@ -1,9 +1,10 @@
 import { alert } from '../../../services/alert';
 import { takeLatest, put, all } from 'redux-saga/effects';
+import { getLastPosition } from '../position/action';
 
-function* anchorSuccess({ response, meta: { requestAction: { active } } }) {
+function* anchorSuccess({ response, meta: { requestAction: { imei } } }) {
     yield alert('success', 'Âncoragem', response.data.message);
-    yield put({ type: 'UPDATE_ANCHOR', active });
+    yield put(getLastPosition(imei));
 }
 
 function* handleErrors({ error }) {

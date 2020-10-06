@@ -145,7 +145,6 @@ const Map = ({ route }) => {
                     <Camera
                         centerCoordinate={coordinate}
                         zoomLevel={15}
-                        animationDuration={0}
                     />
                     <Mapbox.Images images={{ carIcon: require('../../assets/images/car.png') }} />
                     <Mapbox.VectorSource>

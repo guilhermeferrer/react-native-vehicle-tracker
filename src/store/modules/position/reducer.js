@@ -16,12 +16,12 @@ export default function position(state = initialState, action) {
         case 'GET_LAST_POSITION_SUCCESS':
             return {
                 ...state,
-                loading: false,
                 lastPosition: action.response.data
             }
         case 'GET_POSITIONS_SUCCESS':
             return {
                 ...state,
+                loading: false,
                 positions: action.response.data
             }
         case 'ADD_POSITION':
@@ -46,20 +46,6 @@ export default function position(state = initialState, action) {
             return {
                 ...state,
                 success: null
-            }
-        case 'UPDATE_ANCHOR':
-            return {
-                ...state,
-                lastPosition: {
-                    ...state.lastPosition,
-                    events_config: {
-                        ...state.lastPosition.events_config,
-                        anchor: {
-                            ...state.lastPosition.events_config.anchor,
-                            active: action.active
-                        }
-                    }
-                }
             }
         default:
             return state;
