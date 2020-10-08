@@ -21,6 +21,7 @@ import {
 
 import StatusBar from '../../components/StatusBar';
 import Vehicle from '../../components/Vehicle';
+import Loading from '../../components/Loading';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/modules/user/action';
@@ -35,6 +36,7 @@ export default function Vehicles({ navigation }) {
     const aRef = useAnimatedRef();
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
+    const loading = useSelector(state => state.vehicle.loading);
     const vehicles = useSelector(state => state.vehicle.vehicles);
 
     const config = {
@@ -112,28 +114,31 @@ export default function Vehicles({ navigation }) {
                         </>
                     </Header>
                 </TouchableWithoutFeedback>
-                <Content>
-                    <Scroll style={style}>
-                        {
-                            vehicles.map((vehicle, index) => (
-                                <Vehicle {...vehicle} key={index} />
-                            ))
-                        }
-                    </Scroll>
-                    <Hidden style={hiddenViewStyle} ref={aRef}>
-                        <OptionsContainer>
-                            <RectButton onPress={handleLogout}>
-                                <OptionRow>
-                                    <IconRow>
-                                        <Ionicons name='power-outline' color='white' size={20} />
-                                        <OptionLabel>Sair</OptionLabel>
-                                    </IconRow>
-                                    <Icon name='right' color='white' size={14} />
-                                </OptionRow>
-                            </RectButton>
-                        </OptionsContainer>
-                    </Hidden>
-                </Content>
+                {
+                    loading ? <Loading /> :
+                        <Content>
+                            <Scroll style={style}>
+                                {
+                                    vehicles.map((vehicle, index) => (
+                                        <Vehicle {...vehicle} key={index} />
+                                    ))
+                                }
+                            </Scroll>
+                            <Hidden style={hiddenViewStyle} ref={aRef}>
+                                <OptionsContainer>
+                                    <RectButton onPress={handleLogout}>
+                                        <OptionRow>
+                                            <IconRow>
+                                                <Ionicons name='power-outline' color='white' size={20} />
+                                                <OptionLabel>Sair</OptionLabel>
+                                            </IconRow>
+                                            <Icon name='right' color='white' size={14} />
+                                        </OptionRow>
+                                    </RectButton>
+                                </OptionsContainer>
+                            </Hidden>
+                        </Content>
+                }
             </Container>
         </>
     );

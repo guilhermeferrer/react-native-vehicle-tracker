@@ -4,6 +4,7 @@ import Vehicles from '../pages/Vehicles';
 import Positions from '../pages/Positions';
 import Map from '../pages/Map';
 import Report from '../pages/Report';
+import Routes from '../pages/Routes';
 
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 
@@ -45,6 +46,10 @@ export default function Unlogged() {
             />
             <Screen name='Map'
                 component={Map}
+                options={TransitionPresets.FadeFromBottomAndroid}
+            />
+            <Screen name='Routes'
+                component={Routes}
                 options={TransitionPresets.FadeFromBottomAndroid}
             />
             <Screen name='Report' component={Report}

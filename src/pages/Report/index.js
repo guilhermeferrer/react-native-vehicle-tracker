@@ -36,7 +36,7 @@ const Report = ({ navigation, route }) => {
 
     function handleGetReportData() {
         setLoading(true);
-        dispatch(getReportPositions(imei, startDate, endDate));
+        dispatch(getReportPositions(imei, format(new Date(startDate), 'yyyy-MM-dd'), format(new Date(endDate), 'yyyy-MM-dd')));
     }
 
     function onChangeStart(event, selectedDate) {

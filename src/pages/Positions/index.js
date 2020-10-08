@@ -57,6 +57,7 @@ export default function Positions({ navigation, route }) {
     const lastPosition = useSelector(state => state.position.lastPosition);
     const positions = useSelector(state => state.position.positions);
     const loading = useSelector(state => state.position.loading);
+    const loadingPositions = useSelector(state => state.position.loadingPositions);
 
     const config = {
         duration: 200
@@ -112,6 +113,8 @@ export default function Positions({ navigation, route }) {
         dispatch(getPositions(imei));
         positionListener();
         client.emit('join', imei);
+
+        return () => client.removeAllListeners();
     }, []);
 
     function handleChangeOilAndElectricityStatus() {
@@ -179,13 +182,14 @@ export default function Positions({ navigation, route }) {
                             </Column>
                             <Scroll style={style} ref={aRef}>
                                 {
-                                    positions.map((position, index) => (
-                                        <Position key={index} {...{ position }} />
-                                    ))
+                                    loadingPositions ? <Loading /> :
+                                        positions.map((position, index) => (
+                                            <Position key={index} {...{ position }} />
+                                        ))
                                 }
                             </Scroll>
                             <Hidden style={hiddenViewStyle}>
-                                <CardInfo />
+                                <CardInfo {...lastPosition} />
                                 <OptionsContainer>
                                     <RectButton onPress={handleChangeOilAndElectricityStatus}>
                                         <OptionRow>
@@ -205,11 +209,11 @@ export default function Positions({ navigation, route }) {
                                             <Icon name='right' color='white' size={14} />
                                         </OptionRow>
                                     </RectButton>
-                                    <RectButton>
+                                    <RectButton onPress={() => navigation.navigate('Routes')}>
                                         <OptionRow>
                                             <IconRow>
                                                 <Ionicons name='today-outline' color='white' size={20} />
-                                                <OptionLabel>Resumo do dia</OptionLabel>
+                                                <OptionLabel>Rotas do dia</OptionLabel>
                                             </IconRow>
                                             <Icon name='right' color='white' size={14} />
                                         </OptionRow>

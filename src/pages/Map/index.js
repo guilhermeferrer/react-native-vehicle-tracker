@@ -44,8 +44,8 @@ const Map = ({ route }) => {
     const { window: { height } } = useDimensions();
     const aRef = useAnimatedRef();
 
-    const positionListener = () => client.on('position', position => {
-        setPosition(position);
+    const positionListener = () => client.on('position', newPosition => {
+        setPosition({ ...position, ...newPosition });
     });
 
     const CLOSED = height - 50;
@@ -115,6 +115,8 @@ const Map = ({ route }) => {
             positionListener();
             client.emit('join', imei);
         }
+
+        return () => client.removeAllListeners();
     }, []);
 
     function getAnchorState() {
@@ -155,12 +157,12 @@ const Map = ({ route }) => {
                         <Mapbox.FillLayer id="water" style={{ fillColor: '#0A8CB9' }} />
                     </Mapbox.VectorSource>
                     {
-                        realTime && getAnchorState() && zoomLevel >= 15.6 &&
+                        realTime && getAnchorState() &&
                         <>
                             <Mapbox.ShapeSource
                                 id="line"
                                 aboveLayerID='background'
-                                shape={circle(getAnchor(), 50, { units: 'meters' })}>
+                                shape={circle(getAnchor(), 20, { units: 'meters' })}>
                                 <Mapbox.LineLayer
                                     id="shapeLine"
                                     style={{
@@ -173,7 +175,7 @@ const Map = ({ route }) => {
                             <Mapbox.ShapeSource
                                 id="circle"
                                 bellowLayerID='iconShape'
-                                shape={circle(getAnchor(), 50, { units: 'meters' })}>
+                                shape={circle(getAnchor(), 20, { units: 'meters' })}>
                                 <Mapbox.FillLayer
                                     id="shapeCircle"
                                     style={{ fillColor: '#0A85ED', fillOpacity: .2 }}

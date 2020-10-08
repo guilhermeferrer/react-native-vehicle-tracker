@@ -10,7 +10,8 @@ import {
     IconInfo,
 } from './styles';
 
-const CardInfo = () => {
+const CardInfo = ({ velocity, latitude, longitude }) => {
+
     return (
         <Container>
             <IconsContainerTitle>Informações do veículo</IconsContainerTitle>
@@ -18,7 +19,7 @@ const CardInfo = () => {
                 <IconGroup>
                     <PanelIcon source={require('../../assets/images/speed.png')} />
                     <Label>Velocidade</Label>
-                    <IconInfo>15 km/h</IconInfo>
+                    <IconInfo>{velocity} km/h</IconInfo>
                 </IconGroup>
                 <IconGroup>
                     <PanelIcon source={require('../../assets/images/tire.png')} />
@@ -38,12 +39,12 @@ const CardInfo = () => {
                 <IconGroup>
                     <PanelIcon source={require('../../assets/images/mapa.png')} />
                     <Label>Longitude</Label>
-                    <IconInfo>-46.880330</IconInfo>
+                    <IconInfo>{Number(longitude).toFixed(6)}</IconInfo>
                 </IconGroup>
                 <IconGroup>
                     <PanelIcon source={require('../../assets/images/mapa.png')} />
                     <Label>Latitude</Label>
-                    <IconInfo>-17.225995</IconInfo>
+                    <IconInfo>{Number(latitude).toFixed(6)}</IconInfo>
                 </IconGroup>
                 <IconGroup>
                     <PanelIcon source={require('../../assets/images/norte.png')} />
