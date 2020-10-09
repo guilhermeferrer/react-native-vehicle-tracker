@@ -1,8 +1,12 @@
 import styled from 'styled-components/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Animated from 'react-native-reanimated';
+import LinearGradient from 'react-native-linear-gradient';
+import { RectButton } from 'react-native-gesture-handler';
 
-export const Container = styled.View`
+export const Container = styled(LinearGradient).attrs({
+    colors: ['#07C8F9', '#09A6F3', '#0A85ED']
+})`
     flex: 1;
 `;
 
@@ -28,8 +32,11 @@ export const GoUpLabel = styled(Animated.Text)`
     font-family: 'Montserrat-Medium';
 `;
 
-export const Card = styled.View`
-    width: 100%;
+export const Card = styled(Animated.View)`
+    width: ${props => props.width}px;
+    height: 150px;
+    elevation: .5;
+    margin-left: 15px;
     padding: 15px;
     background-color: white;
     border-radius: 4px;
@@ -80,5 +87,40 @@ export const Point = styled.View`
     width: 25px;
     height: 25px;
     border-radius: 12px;
-    border-color: #0A85ED; 
-`; 
+    border-color: #09A6F3; 
+    elevation: 2;
+`;
+
+export const Next = styled(RectButton)`
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    elevation: 1;
+    background: #0A85ED;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 10px;
+    top: 30%;
+`;
+
+export const Back = styled(RectButton)`
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    elevation: 1;
+    background: #0A85ED;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 10px;
+    top: 30%;
+`;
+
+export const Carousel = styled(Animated.View)`
+    width: ${props => props.width}px;
+    flex-direction: row;
+    background: red;
+    position: absolute;
+    bottom: 10px;
+`;

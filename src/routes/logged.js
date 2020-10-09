@@ -42,7 +42,6 @@ export default function Unlogged() {
             />
             <Screen name='Positions'
                 component={Positions}
-                options={TransitionPresets.FadeFromBottomAndroid}
             />
             <Screen name='Map'
                 component={Map}
@@ -50,7 +49,6 @@ export default function Unlogged() {
             />
             <Screen name='Routes'
                 component={Routes}
-                options={TransitionPresets.FadeFromBottomAndroid}
             />
             <Screen name='Report' component={Report}
                 options={{
