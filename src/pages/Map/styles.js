@@ -73,3 +73,10 @@ export const Address = styled.Text`
     font-size: 14px;
     font-family: 'Montserrat-Regular';
 `;
+
+export const CarIcon = styled.Image`
+    resize-mode: contain;
+    width: 50px;
+    margin-top: 15px;
+    height: 50px;
+`;

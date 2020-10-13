@@ -8,17 +8,24 @@ import { format } from 'date-fns';
 import { useSelector, useDispatch } from 'react-redux';
 import { getRoutes } from '../../store/modules/routes/action';
 import { PanGestureHandler } from 'react-native-gesture-handler';
-import { useSharedValue, useAnimatedGestureHandler, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { useSharedValue, useAnimatedGestureHandler, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 const { height, width } = Dimensions.get('window');
+import { snapPoint } from 'react-native-redash';
 
 import {
     Container,
     Point,
     Card,
-    Next,
-    Back,
-    Carousel
+    Step,
+    Carousel,
+    PanView,
+    Address,
+    DateInfo,
+    Row,
+    Column,
+    CircleLine,
+    Line
 } from './styles';
 
 const card = width;
@@ -36,6 +43,7 @@ const Routes = () => {
     const [index, setIndex] = useState(0);
     const mapRef = useRef();
     const x = useSharedValue(0);
+    const measures = useSharedValue([]);
 
     const gestureHandler = useAnimatedGestureHandler({
         onStart: (_, ctx) => {
@@ -45,8 +53,10 @@ const Routes = () => {
             x.value = ctx.startX + event.translationX;
         },
         onEnd: (event) => {
-            const index = x.value / card;
-            x.value = withSpring(Math.round(index) * (card - 15));
+            const snapTo = snapPoint(x.value, event.velocityX, measures.value);
+            const index = measures.value.indexOf(snapTo);
+            x.value = withTiming(snapTo);
+            setIndex(index);
         }
     });
 
@@ -68,6 +78,10 @@ const Routes = () => {
         if (routes.length > 0)
             setInitialData();
     }, [routes, index]);
+
+    useEffect(() => {
+        measures.value = routes.map((_, index) => index * -width);
+    }, [routes]);
 
     useEffect(() => {
         handleChangeCamera();
@@ -162,16 +176,42 @@ const Routes = () => {
                             }
                         </MapView>
                         <PanGestureHandler onGestureEvent={gestureHandler}>
-                            <Carousel width={card * routes.length} style={animatedStyle}>
-                                {
-                                    routes.map((route, index) => (
-                                        <Card width={card - 30} key={index}>
-                                            {routes.length - 1 >= index + 1 && <Next onPress={handleIncrement}></Next>}
-                                            {index - 1 >= 0 && <Back onPress={handleDecrement}></Back>}
-                                        </Card>
-                                    ))
-                                }
-                            </Carousel>
+                            <PanView>
+                                <Carousel width={card * routes.length} style={animatedStyle}>
+                                    {
+                                        routes.map(({ startDate, startAddress, endDate, endAddress }, index) => (
+                                            <Card width={card - 30} key={index}>
+                                                <Step>Trecho {index + 1} de {routes.length}</Step>
+                                                <Row>
+                                                    {endDate
+                                                        ?
+                                                        <CircleLine>
+                                                            <Point />
+                                                            <Line />
+                                                        </CircleLine>
+                                                        :
+                                                        <Point />
+                                                    }
+                                                    <Column expand={endDate}>
+                                                        <Address>{startAddress}</Address>
+                                                        <DateInfo>{format(new Date(startDate), 'dd/MM/yyyy HH:mm')}</DateInfo>
+                                                    </Column>
+                                                </Row>
+                                                {
+                                                    endDate &&
+                                                    <Row>
+                                                        <Point />
+                                                        <Column>
+                                                            <Address>{endAddress}</Address>
+                                                            <DateInfo>{format(new Date(endDate), 'dd/MM/yyyy HH:mm')}</DateInfo>
+                                                        </Column>
+                                                    </Row>
+                                                }
+                                            </Card>
+                                        ))
+                                    }
+                                </Carousel>
+                            </PanView>
                         </PanGestureHandler>
                     </>
                 }

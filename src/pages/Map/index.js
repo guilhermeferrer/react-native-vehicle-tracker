@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Mapbox, { MapView, Camera } from '@react-native-mapbox-gl/maps';
 import StatusBar from '../../components/StatusBar';
-import { point, circle } from '@turf/turf';
 import { useDimensions } from '@react-native-community/hooks';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/esm/locale';
 import { useSelector } from 'react-redux';
+import MapView, { Marker, Circle } from 'react-native-maps';
 
 import { useSharedValue, useAnimatedStyle, useAnimatedGestureHandler, withSpring, repeat, withTiming, useAnimatedRef, withDecay, measure } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
@@ -25,18 +24,14 @@ import {
     LastUpdate,
     CardHeader,
     Address,
-    AddressRow
+    AddressRow,
+    CarIcon
 } from './styles';
-
-import CardInfo from '../../components/CardInfo';
-
-Mapbox.setAccessToken('pk.eyJ1IjoiZ3VpbGhlcm1lZm0iLCJhIjoiY2sxeTNnYjFmMGczMDNjbzNvYmdsdXVxcyJ9.HGlb6ErSRgQaGF8zAQZVew');
 
 const Map = ({ route }) => {
     const client = io('http://nextfood.kinghost.net:21621');
     const { params } = route;
     const [position, setPosition] = useState(params);
-    const [zoomLevel, setZoomLevel] = useState(0);
     const { plate, model, year, brand } = useSelector(state => state.vehicle.vehicle);
 
     const { latitude, longitude, imei, address, gps_date, realTime } = position;
@@ -51,7 +46,6 @@ const Map = ({ route }) => {
     const CLOSED = height - 50;
     const OPENED = height - 155;
     const translation = useSharedValue(CLOSED);
-    const coordinate = [Number(longitude), Number(latitude)];
     const loopAnimation = useSharedValue(0);
 
     const options = {
@@ -131,7 +125,13 @@ const Map = ({ route }) => {
 
     function getAnchor() {
         const { events_config } = position;
-        return events_config.anchor.point;
+
+        const [longitude, latitude] = events_config.anchor.point;
+
+        return {
+            longitude,
+            latitude
+        };
     }
 
     return (
@@ -139,78 +139,32 @@ const Map = ({ route }) => {
             <Container>
                 <MapView
                     style={{ flex: 1 }}
-                    /* styleURL={Mapbox.StyleURL.Dark} */
-                    logoEnabled={false}
-                    attributionEnabled={false}
-                    onRegionDidChange={event => setZoomLevel(event.properties.zoomLevel)}
+                    initialRegion={{
+                        latitude,
+                        longitude,
+                        latitudeDelta: 0.02,
+                        longitudeDelta: 0.02
+                    }}
                 >
-                    <Camera
-                        centerCoordinate={coordinate}
-                        zoomLevel={15}
-                    />
-                    <Mapbox.Images images={{ carIcon: require('../../assets/images/car.png') }} />
-                    <Mapbox.VectorSource>
-                        <Mapbox.BackgroundLayer
-                            id="background"
-                            style={{ backgroundColor: '#0A85ED', backgroundOpacity: .1 }}
-                        />
-                        <Mapbox.FillLayer id="water" style={{ fillColor: '#0A8CB9' }} />
-                    </Mapbox.VectorSource>
+                    <Marker
+                        coordinate={{
+                            latitude,
+                            longitude
+                        }}
+                        anchor={{ x: 0.5, y: 0.6 }}
+                    >
+                        <CarIcon source={require('../../assets/images/car.png')} />
+                    </Marker>
                     {
                         realTime && getAnchorState() &&
-                        <>
-                            <Mapbox.ShapeSource
-                                id="line"
-                                aboveLayerID='background'
-                                shape={circle(getAnchor(), 20, { units: 'meters' })}>
-                                <Mapbox.LineLayer
-                                    id="shapeLine"
-                                    style={{
-                                        lineColor: '#0A85ED',
-                                        lineWidth: 2.5,
-                                        lineDasharray: [0.00001, 0.00001],
-                                    }}
-                                />
-                            </Mapbox.ShapeSource>
-                            <Mapbox.ShapeSource
-                                id="circle"
-                                bellowLayerID='iconShape'
-                                shape={circle(getAnchor(), 20, { units: 'meters' })}>
-                                <Mapbox.FillLayer
-                                    id="shapeCircle"
-                                    style={{ fillColor: '#0A85ED', fillOpacity: .2 }}
-                                />
-                            </Mapbox.ShapeSource>
-                            <Mapbox.ShapeSource
-                                id="iconShape2"
-                                aboveLayerID='background'
-                                shape={point(coordinate)}>
-                                <Mapbox.SymbolLayer
-                                    id="icon2"
-                                    style={{
-                                        iconImage: 'carIcon',
-                                        iconAllowOverlap: true,
-                                        textAllowOverlap: true,
-                                        iconSize: .07
-                                    }}
-                                />
-                            </Mapbox.ShapeSource>
-                        </>
-                    }
-                    <Mapbox.ShapeSource
-                        id="iconShape"
-                        aboveLayerID='background'
-                        shape={point(coordinate)}>
-                        <Mapbox.SymbolLayer
-                            id="icon"
-                            style={{
-                                iconImage: 'carIcon',
-                                iconAllowOverlap: true,
-                                textAllowOverlap: true,
-                                iconSize: .07
-                            }}
+                        <Circle
+                            center={getAnchor()}
+                            strokeWidth={2}
+                            strokeColor={'#07C8F9'}
+                            fillColor={'rgba(7, 200, 249, .2)'}
+                            radius={20}
                         />
-                    </Mapbox.ShapeSource>
+                    }
                 </MapView>
                 <PanGestureHandler onGestureEvent={gestureHandler}>
                     <CardContainer style={style}>

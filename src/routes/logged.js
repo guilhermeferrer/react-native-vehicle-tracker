@@ -45,7 +45,6 @@ export default function Unlogged() {
             />
             <Screen name='Map'
                 component={Map}
-                options={TransitionPresets.FadeFromBottomAndroid}
             />
             <Screen name='Routes'
                 component={Routes}

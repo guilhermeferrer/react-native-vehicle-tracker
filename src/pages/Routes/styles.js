@@ -34,23 +34,52 @@ export const GoUpLabel = styled(Animated.Text)`
 
 export const Card = styled(Animated.View)`
     width: ${props => props.width}px;
-    height: 150px;
-    elevation: .5;
+    elevation: 2;
     margin-left: 15px;
     padding: 15px;
     background-color: white;
     border-radius: 4px;
+    margin: 0 15px;
     margin-top: 15px;
 `;
 
-export const Plate = styled.Text`
-    font-size: 18px;
+export const Step = styled.Text`
+    font-size: 16px;
     font-family: 'Montserrat-Medium';
+    padding-bottom: 5px;
+    border-color: rgba(0, 0, 0, .2);
+    margin-bottom: 10px;
+    border-bottom-width: 1px;
+`;
+
+export const Address = styled.Text`
+    font-size: 14px;
+    font-family: 'Montserrat-Regular';
+`;
+
+export const DateInfo = styled.Text`
+    font-size: 12px;
+    font-family: 'Montserrat-Light';
 `;
 
 export const Row = styled.View`
     flex-direction: row;
-    align-items: center;
+`;
+
+export const Column = styled.View`
+    padding: 0 15px;
+    padding-bottom: ${props => props.expand ? 15 : 0}px;
+`;
+
+export const CircleLine = styled.View`
+    align-items:center;
+`;
+
+export const Line = styled.View`
+    flex: 1;
+    width: 1px;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, .2);
 `;
 
 export const CardHeader = styled(Row)`
@@ -76,11 +105,6 @@ export const LastUpdate = styled.Text`
     font-family: 'Montserrat-Light';
 `;
 
-export const Address = styled.Text`
-    font-size: 14px;
-    font-family: 'Montserrat-Regular';
-`;
-
 export const Point = styled.View`
     background-color: white;
     border-width: 5px;
@@ -91,36 +115,14 @@ export const Point = styled.View`
     elevation: 2;
 `;
 
-export const Next = styled(RectButton)`
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    elevation: 1;
-    background: #0A85ED;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    right: 10px;
-    top: 30%;
-`;
-
-export const Back = styled(RectButton)`
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    elevation: 1;
-    background: #0A85ED;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    left: 10px;
-    top: 30%;
-`;
-
 export const Carousel = styled(Animated.View)`
     width: ${props => props.width}px;
     flex-direction: row;
-    background: red;
+`;
+
+export const PanView = styled(Animated.View)`
     position: absolute;
     bottom: 10px;
+    left: 0;
+    right: 0;
 `;
