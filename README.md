@@ -1,16 +1,16 @@
-# reanimated-2-playground
+# React Native Vehicle Tracker
 
-This repo contains a fresh React Native project with preinstalled Reanimated V2
+This repo is a react-native car tracking app, some of the functionalities are track positions, cut and restore electricity, receive notifications about events, get current state of the vehicle, get pdfs reports and more.
 
-Checkout using the following command to start playing with the new Reanimated API:
+Checkout using the following command to start playing with the app:
 
 ```bash
-> git clone git@github.com:software-mansion-labs/reanimated-2-playground.git
+> git clone https://github.com/guilhermeferrer/react-native-vehicle-tracker
 ```
 
 Don't forget to install dependencies:
 ```bash
-> cd reanimated-2-playground && yarn
+> cd react-native-vehicle-tracke && yarn
 ```
 
 If you want to install app on the iOS simulator:
@@ -18,6 +18,7 @@ If you want to install app on the iOS simulator:
 npx pod-install
 ```
 
-Then run the app using Xcode or `react-native` CLI.
-
-[Check Reanimated 2 documentation here.](https://docs.swmansion.com/react-native-reanimated/)
+To start the app use:
+```bash
+> yarn android or yarn ios
+```
